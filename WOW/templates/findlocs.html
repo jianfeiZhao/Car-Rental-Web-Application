@@ -1,0 +1,42 @@
+{% extends "layout.html" %} 
+{% block content %} 
+    <div class="content-section">
+        <legend class="border-bottom mb-4">Search Rental Offices</legend>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.city.label(class="form-control-label") }}
+
+        {% if form.city.errors %}
+            {{ form.city(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.city.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.city(class="form-control form-control-lg") }}
+        {% endif %}
+
+    </div>
+    <div class="form-group">
+        {{ form.zipcode.label(class="form-control-label") }}
+
+        {% if form.zipcode.errors %}
+            {{ form.zipcode(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.zipcode.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.zipcode(class="form-control form-control-lg") }}
+        {% endif %}
+
+    </div>
+ <div class="form-group">
+    {{ form.submit(class="btn btn-outline-info") }}
+ </div>
+ </form>
+</div>
+ {% endblock content %} 

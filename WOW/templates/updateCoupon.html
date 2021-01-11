@@ -1,0 +1,49 @@
+{% extends "layout.html" %} 
+{% block content %} 
+    <div class="content-section">
+        <h3 class="border-bottom mb-4">Update Coupon &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+            <a class="btn btn-secondary btn-sm mt-0 mb-2" href="{{ url_for('new_coupon') }}">Add New Coupon</a>
+        </h3>
+        <div class="vehicle-listing__main-content">
+            <section class="vehicle-listing__main-content-group" id="category100"> 
+                <legend>{{num}} coupons found</legend>           
+                <form method="POST" action="">
+                    <div>
+                      {% for coup in coups %}
+                        <article class="media content-section">
+                          <div class="form-group">
+                            <div>
+                            <a class="btn btn-secondary btn-sm mt-1 mb-2" href="{{ url_for('update_coupon', coup_id=coup[0]) }}">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#{{ coup[0] }}">Delete</button>
+                            </div>
+                            <a class="mr-2">Coupon ID: {{ coup[0] }}</a>
+                            <a class="mr-2">Discount: {{ coup[1] }}</a>
+                            <a class="mr-2">Start Date: {{ coup[2] }}</a>
+                            <a class="mr-2">End Date: {{ coup[3] }}</a>          
+                          </div>
+                        </article>
+                        <div class="modal fade" id="{{ coup[0] }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="deleteModalLabel">Delete Corporation?</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <form action="{{ url_for('delete_coupon', coup_id=coup[0]) }}" method="POST">
+                                    <input class="btn btn-danger" type="submit" value="Delete">
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      {% endfor %}
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock content %} 

@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <article class="media content-section">
+                <div class="form-group">
+                  <small class="text-muted">{{ invoice.invo_date.strftime('%Y-%m-%d %H:%M') }}</small>
+                  <p>
+                  <a class="border-bottom mr-2">No. {{ invoice.id }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Pickup Location: {{ service.pick_loc }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Return Location: {{ service.drop_loc }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Pickup Date: {{ service.pick_date.strftime('%Y-%m-%d') }}</a>
+                  <a class="border-bottom mr-2">Return Date: {{ service.drop_date.strftime('%Y-%m-%d') }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Start Odometer: {{ service.start_odo }}miles</a>
+                  <a class="border-bottom mr-2">End Odometer: {{ service.end_odo }}miles</a>
+                  <a class="border-bottom mr-2">Daily Odometer Limite: {{ service.day_odo }}miles</a>
+                  </p>
+                  <p>
+                    <a class="border-bottom mr-2">Payment Amount: ${{ invoice.invo_amount }}</a>
+                  </p>
+                </div>
+            </article>
+            <div class="form-group">
+                {{ form.pay_method.label(class="form-control-label") }}
+                {% if form.pay_method.errors %}
+                    {{ form.pay_method(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.pay_method.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.pay_method(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.card_no.label(class="form-control-label") }}
+                {% if form.card_no.errors %}
+                    {{ form.card_no(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.card_no.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.card_no(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}

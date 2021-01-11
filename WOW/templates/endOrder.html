@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <article class="media content-section">
+                <div class="form-group">
+                  <small class="text-muted">{{ service.date.strftime('%Y-%m-%d %H:%M') }}</small>
+                  <p>
+                  <a class="border-bottom mr-2">Service ID: {{ service.id }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">First Name: {{ current_user.fname }}</a>
+                  <a class="border-bottom mr-2">Last Name: {{ current_user.lname }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Pickup Location: {{ pick_loc }}</a>
+                  <a class="border-bottom mr-2">Return Location: {{ drop_loc }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Pickup Date: {{ pick_date }}</a>
+                  <a class="border-bottom mr-2">Return Date: {{ drop_date }}</a>
+                  </p>
+                  <p>
+                  <a class="border-bottom mr-2">Start Odometer: {{ service.start_odo }}miles</a>
+                  <a class="border-bottom mr-2">Daily Odometer Limite: {{ service.day_odo }}miles</a>
+                  </p>
+                </div>
+            </article>
+            <div class="form-group">
+                {{ form.end_odo.label(class="form-control-label") }}
+                {% if form.end_odo.errors %}
+                    {{ form.end_odo(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.end_odo.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.end_odo(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}

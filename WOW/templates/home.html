@@ -1,0 +1,168 @@
+{% extends "layout.html" %} 
+{% block content %} 
+{% if current_user.is_authenticated %}
+    <h2> Welcome {{ current_user.fname }} ! </h2>
+{% endif %}
+
+{% if a == 'admin' and b == 'wow' %}
+  <p class="vehicle-listing__sidebar">
+    <nav class="sidebar-nav" data-national-ui="tabNavigation">
+      <ul>
+        <li class="sidebar-nav__link-list-item sidebar-nav__link--highlight">
+          <p> 
+          <a href="{{ url_for('updateVehicles') }}" class="sidebar-nav__link link--caret">Update Vehicles</a>
+          </p> 
+        </li>                                
+
+        <li class="sidebar-nav__link-list-item sidebar-nav__link--highlight">
+            <p>  
+          <a href="{{ url_for('updateLocation') }}" class="sidebar-nav__link link--caret">Update Location</a>
+            </p>
+        </li>
+
+        <li class="sidebar-nav__link-list-item false">
+            <p>  
+          <a href="{{ url_for('updateCorporate') }}" class="sidebar-nav__link link--caret">Update Corporations</a>
+            </p>
+        </li>
+      
+        <li class="sidebar-nav__link-list-item false">
+            <p>
+          <a href="{{ url_for('updateCoupon') }}" class="sidebar-nav__link link--caret">Update Coupons</a>
+            </p>
+        </li>
+
+        <li class="sidebar-nav__link-list-item false">
+            <p>
+          <a href="{{ url_for('showCustomers') }}" class="sidebar-nav__link link--caret">Update Customers</a>
+            </p>
+        </li>
+      </ul>
+    </nav>
+</p>
+
+{% else %}
+<div class="content-section">
+  <form method="POST" action="">
+       {{ form.hidden_tag() }}
+       <fieldset class="form-group">
+           <legend class="border-bottom mb-4">Start a Reservation</legend>
+           <div class="form-group">
+               {{ form.pick_loc.label(class="form-control-label") }}
+
+               {% if form.pick_loc.errors %}
+                   {{ form.pick_loc(class="form-control form-control-lg is-invalid") }}
+                   <div class="invalid-feedback">
+                       {% for error in form.pick_loc.errors %}
+                           <span>{{ error }}</span>
+                       {% endfor %}
+                   </div>
+               {% else %}
+                   {{ form.pick_loc(class="form-control form-control-lg") }}
+               {% endif %}
+
+           </div>
+           <div class="form-group">
+            {{ form.drop_loc.label(class="form-control-label") }}
+
+            {% if form.drop_loc.errors %}
+                {{ form.drop_loc(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.drop_loc.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.drop_loc(class="form-control form-control-lg") }}
+            {% endif %}
+
+        </div>
+           <div class="form-group">
+            {{ form.pickup.label(class="form-control-label") }}
+
+            {% if form.pickup.errors %}
+                {{ form.pickup(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.pickup.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.pickup(class="form-control form-control-lg") }}
+            {% endif %}
+
+        </div>
+           <div class="form-group">
+              {{ form.dropoff.label(class="form-control-label") }}
+
+              {% if form.dropoff.errors %}
+                  {{ form.dropoff(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.dropoff.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.dropoff(class="form-control form-control-lg") }}
+              {% endif %}
+
+          </div>
+       </fieldset>
+       <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+  </form>
+</div>
+&nbsp;
+<div class="content-section">
+<form method="POST" action="">
+  <legend class="border-bottom mb-4">Order History</legend>
+  <div>
+    {% for order in orders %}
+        <article class="media content-section">
+          <div class="form-group">
+            <small class="text-muted">{{ order[5] }} &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+                {% if order[6] == 0.00 %}
+                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#{{ order[0] }}">End this order</button>
+                {% else %}
+                    <a class="btn btn-secondary btn-sm mt-1 mb-2" href="#">Order ended</a>
+                    {% if order[7] == None %}
+                        <a class="btn btn-secondary btn-danger btn-sm mt-1 mb-2" href="{{ url_for('pay_order', service_id=order[0]) }}">Pay this order</a>
+                    {% else %}
+                        <a class="btn btn-secondary btn-sm mt-1 mb-2" href="#">Order has been paid</a>
+                        <a class="ml-2" href="{{ url_for('order_details', order_id=order[7].invo_id) }}">details</a>
+                    {% endif %}
+                {% endif %}
+            </small>
+            <p class="mr-2" href="#">Service ID: {{ order[0] }}</p>
+            <p class="mr-2">Pickup Location: {{ order[1] }}</p>
+            <p class="mr-2">Return Location: {{ order[2] }}</p>
+            <a class="mr-2">Pickup Date: {{ order[3] }}</a>
+            <a class="mr-2">Return Date: {{ order[4] }}</a>
+          </div>
+        </article>
+
+        <div class="modal fade" id="{{ order[0] }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel">End this order?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <a type="button" class="btn btn-danger btn-sm m-1" href="{{ url_for('end_order', service_id=order[0], pick_loc=order[1], drop_loc=order[2], pick_date=order[3], drop_date=order[4]) }}">Yes</a>
+                </div>
+              </div>
+            </div>
+          </div>
+    {% endfor %}
+  </div>
+</form>
+</div>
+{% endif %}
+{% endblock content %} 
+
+

@@ -1,0 +1,77 @@
+{% extends "layout.html" %} 
+{% block content %} 
+    <div class="content-section">
+        <legend class="border-bottom mb-4">Search Rental Offices</legend>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.city.label(class="form-control-label") }}
+
+        {% if form.city.errors %}
+            {{ form.city(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.city.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.city(class="form-control form-control-lg") }}
+        {% endif %}
+
+    </div>
+    <div class="form-group">
+        {{ form.zipcode.label(class="form-control-label") }}
+
+        {% if form.zipcode.errors %}
+            {{ form.zipcode(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.zipcode.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.zipcode(class="form-control form-control-lg") }}
+        {% endif %}
+
+    </div>
+ <div class="form-group">
+    {{ form.submit(class="btn btn-outline-info") }}
+ </div>
+</form>
+</div>
+    <legend class="border-bottom mb-4">{{num}} locations found</legend>           
+                <form method="POST" action="">
+                    <div>
+                      {% for location in locations %}
+                        <article class="media content-section">    
+                            <div>                  
+                            <div class="border-bottom mb-4"> 
+                            <h4 class="border-bottom mb-4">Address</h4>  
+                            <p class="mr-2">Street: {{ location[1] }}</p>
+                            <a class="mr-2">City: {{ location[2] }}</a>
+                            <a class="mr-2">State: {{ location[3] }}</a>
+                            <a class="mr-2">Zipcode: {{ location[4] }}</a> 
+                            <p></p>                                               
+                            <p class="mr-2">Phone Number: {{ location[5] }}</p>  
+                            </div>
+                            <legend>Cars found in this location</legend>  
+                            <p> 
+                                {% for car in cars[location[0]] %}
+                                <article class="media content-section">                       
+                                    <div>
+                                    <a class="mr-2">VIN: {{ car[1] }}</a>
+                                    <a class="mr-2">Make: {{ car[2] }}</a>
+                                    <a class="mr-2">Model: {{ car[3] }}</a>
+                                    <a class="mr-2">Year: {{ car[4] }}</a>                                                
+                                    <a class="mr-2">Class: {{ car[5] }}</a>
+                                    </div>
+                                </article>
+                                {% endfor %}
+                              </p>                       
+                          </div>                         
+                        </article>
+                      {% endfor %}
+                    </div>
+                </form>
+
+{% endblock content %} 
